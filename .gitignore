@@ -3,4 +3,3 @@ build/
 __pycache__/
 server/__pycache__/
 client/__pycache__/
-common.py
