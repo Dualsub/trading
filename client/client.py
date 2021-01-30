@@ -46,33 +46,11 @@ class Client():
 
 plt.style.use("seaborn")
 
+span = 500
+
 c = None
 x_vals = []
-y1_vals = []
-y2_vals = []
-
-def plot_data(i):
-    data = c.try_get_data()["stocks"]
-    global y1_vals
-    global y2_vals
-    global x_vals
-
-    x_vals.append(datetime.datetime.now())
-    y1_vals.append(data["AAPL"]["price"])
-    y2_vals.append(data["GAME"]["price"])
-
-    if(len(y1_vals) >= 20):
-        y1_vals = y1_vals[len(y1_vals)-20:]
-        x_vals = x_vals[len(x_vals)-20:]
-
-    if(len(y2_vals) >= 20):
-        y2_vals = y2_vals[len(y2_vals)-20:]
-
-
-    plt.cla()
-
-    plt.plot(x_vals, y1_vals, label="AAPL")
-    plt.plot(x_vals, y2_vals, label="GME")
+y_vals = {}
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description='Server-side trading program.')
@@ -80,8 +58,43 @@ if __name__ == "__main__":
     args = parser.parse_args()
     c =  Client("192.168.063.8" if args.adress == None else str(args.adress))
     c.start()
-    anim = animation.FuncAnimation(plt.gcf(), plot_data, interval=200)
+    fig, axs = plt.subplots(2)
 
+    def plot_data(i):
+        data = c.try_get_data()
+
+        global y_vals
+        global x_vals
+
+        x_vals.append(datetime.datetime.now())
+
+        if(len(x_vals) >= span):
+            x_vals = x_vals[len(x_vals)-span:]
+
+
+        sym = list(data.keys())[0]
+        metrics = [["ema12", "ema26", "price"], ["macd", "signal", "histogram"]]
+        for i in range(len(axs)):
+            axs[i].cla()
+            for metric in metrics[i]:
+                if(metric in y_vals.keys()):
+                    y_vals[metric].append(data[sym][metric])
+                else:
+                    y_vals[metric] = [data[sym][metric]]
+                    
+                if(len(y_vals[metric]) >= span):
+                    y_vals[metric] = y_vals[metric][len(y_vals[metric])-span:]
+                if(metric == "histogram"):
+                    axs[i].plot(x_vals, y_vals[metric], label=metric.upper())
+                else:
+                    axs[i].plot(x_vals, y_vals[metric], label=metric.upper())
+
+
+            axs[i].legend(loc='upper left')
+
+    anim = animation.FuncAnimation(fig, plot_data, interval=200)
+
+    plt.get_current_fig_manager().window.state('zoomed')
     plt.tight_layout()
     plt.show()
 

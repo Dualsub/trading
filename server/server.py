@@ -1,4 +1,4 @@
-import socket, threading 
+import socket, threading, json
 import sys, os
 from portfolio import Portfolio
 from termcolor import colored
@@ -39,11 +39,11 @@ class Server():
         #     raise Exception(colored("[FAIL]", "red")+" Failed to accept clients.") 
             
 
-    def broadcast_to_clients(self, port : Portfolio):
+    def broadcast_to_clients(self, data : dict):
         self.accept_clients()
         remove_buffer = []
         for client in self.clients:
-            msg = port.to_json()
+            msg = json.dumps(data)
             msg = f"{len(msg):<{common.SERVER_HEADER}}" + msg
             try:
                 client[0].send(bytes(msg, common.SERVER_FORMAT))

@@ -10,6 +10,7 @@ import model
 import json
 import argparse
 import server
+import time
 from termcolor import colored
 
 def getStocksData(symbols : list):
@@ -28,24 +29,7 @@ def getStocksData(symbols : list):
     data = response.json()
     return data
 
-def plot_history(symbol):
-
-    json_file = open(f"datasets/{symbol}.json", mode="r") 
-    data = json.load(json_file)
-    json_file.close()
-
-    model_data = [(dt.datetime.strptime(entry["date"], '%Y-%m-%d'), float(entry["close"])) for entry in data]
-    mod = model.Model(model_data)
-    # shot_EMA = mod.calc_EMA(26)
-    # long_EMA = mod.calc_EMA(12)
-
-    # MACD = []
-    plt.plot()
-
-    plt.xticks(rotation=45)
-    plt.show()
     
-
 def main():
     # Parsing args
     parser = argparse.ArgumentParser(description='Server-side trading program.')
@@ -64,9 +48,26 @@ def main():
     if(args.save):
         print(colored("[SAVING]", "green") ,f"The data will be saved to {dest} upon shutdown...")
 
+    m = model.Model()
+
     if(args.backtest != None):
-        pass
-        
-        
+        inp_file = open(str(args.backtest), mode="r", encoding="utf8").read()
+        stocks_data = json.loads(inp_file)
+        result = []
+        for stock in stocks_data:
+            sym = str(stock["symbol"])
+            price = float(stock["close"])
+            response = m.add_data({ sym : { "quote": {"latestPrice" : price, "latestUpdate" : 18967987}}})
+            result.append(result)
+            srvr.broadcast_to_clients(response)
+            time.sleep(.1)
+    else:
+        stocks = ["AAPL", "TSLA"]
+        while True:
+            stocks_data = getStocksData(stocks)
+            response = m.add_data(stocks_data)
+            srvr.broadcast_to_clients(response)
+
+    
 if __name__ == "__main__":
     main()
