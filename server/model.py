@@ -19,7 +19,7 @@ class Model():
             newPrice = stocks[sym]["price"]
             numPeriods = stocks[sym]["numPeriods"]
             if(sym in self.lastAvgs.keys()):
-                pass
+                
 
         
 
