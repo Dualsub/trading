@@ -5,6 +5,8 @@ from termcolor import colored
 sys.path.insert(1, os.path.join(sys.path[0], '..'))
 import common
 import traceback
+import random
+import time
 
 class Server():
     def __init__(self, port : int = None):
@@ -39,20 +41,34 @@ class Server():
 
     def broadcast_to_clients(self, port : Portfolio):
         self.accept_clients()
-        for addr, conn in self.clients:
-            conn.send(common.SERVER_HEADER)
-            msg = port.to_json().encode(common.SERVER_FORMAT)         
-            conn.send(msg)
-            if(msg_length != None):
-                msg_length = int()
-                msg = conn.rcv(msg_length).decode(common.SERVER_FORMAT)
-                print(f"[{addr}]", msg)
-                if(msg == common.SERVER_DICONNECT_MSG):
-                    break
+        remove_buffer = []
+        for client in self.clients:
+            msg = port.to_json()
+            msg = f"{len(msg):<{common.SERVER_HEADER}}" + msg
+            try:
+                client[0].send(bytes(msg, common.SERVER_FORMAT))
+            except:
+                print(colored("[CLIENT EXCEPTION]", "red") , f"Failed sending data to client ({client[1]}).")
+                remove_buffer.append(client)
+
+        for client in remove_buffer:
+            print(colored("[REMOVED CLIENT]", "yellow") , f"Removed client with adress: {client[1]}")
+            self.clients.remove(client)
+
+# For debug
 
 if "__main__" == __name__:
     server = Server()
     server.start()
+    p = Portfolio(1000, {
+        "AAPL" : { "price" : 12.34 * (0.9 + (random.random() * 0.2)), "numPeriods" : 10 }, 
+        "GAME" : { "price" : 54.12 * (0.9 + (random.random() * 0.2)), "numPeriods" : 24 }
+        })
 
     while True:
-        server.accept_clients()
+        p.stocks["AAPL"]["price"] *= (0.9 + (random.random() * 0.2))
+        p.stocks["AAPL"]["numPeriods"] += 1
+        p.stocks["GAME"]["price"] *= (0.9 + (random.random() * 0.2)) 
+        p.stocks["GAME"]["numPeriods"] += 1 
+        time.sleep(.1)
+        server.broadcast_to_clients(p)
