@@ -1,4 +1,3 @@
-import pandas as pd
 import numpy as np
 import requests
 import secrets
@@ -11,24 +10,8 @@ import json
 import argparse
 import server
 import time
+import portfolio
 from termcolor import colored
-
-def getStocksData(symbols : list):
-    
-    symbols_str = symbols[0]
-    for sym in symbols[1:]:
-        symbols_str += ","+sym
-
-    url ="https://sandbox.iexapis.com/stable/stock/market/batch?symbols="+symbols_str+"&types=quote&token="+secrets.SECRET_KEY
-
-    response = requests.get(url)
-    if(response.status_code != 200):
-        print("Failed to retrive stock data.\nError Code:", response.status_code)
-        return None
-
-    data = response.json()
-    return data
-
     
 def main():
     # Parsing args
@@ -41,7 +24,7 @@ def main():
 
     srvr = None
     if(args.offline):
-        srvr = server.Server()
+        srvr = server.Server(servername="192.168.0.63")
         srvr.start()
 
     dest = args.dest if args.dest != None else sys.path
@@ -49,6 +32,7 @@ def main():
         print(colored("[SAVING]", "green") ,f"The data will be saved to {dest} upon shutdown...")
 
     m = model.Model()
+
 
     if(args.backtest != None):
         inp_file = open(str(args.backtest), mode="r", encoding="utf8").read()
@@ -62,9 +46,16 @@ def main():
             srvr.broadcast_to_clients(response)
             time.sleep(.1)
     else:
-        stocks = ["AAPL", "TSLA"]
+        p = portfolio.Portfolio(100000)
+        p.create_positions()
+        time.sleep(5)
+        p.update_stocks()
+        print("Stocks:",p.get_stocks())
+        print("Profit:",p.get_profit())
+        print("Profit Percantage:", str(round((p.get_profit_percentage() - 1) * 100, 2))+"%")
+        stocks = p.get_stocks()
         while True:
-            stocks_data = getStocksData(stocks)
+            stocks_data = portfolio.get_stocks_data(stocks)
             response = m.add_data(stocks_data)
             srvr.broadcast_to_clients(response)
 

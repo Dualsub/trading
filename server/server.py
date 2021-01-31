@@ -9,8 +9,8 @@ import random
 import time
 
 class Server():
-    def __init__(self, port : int = None):
-        servername = socket.gethostbyname(socket.gethostname())
+    def __init__(self, port : int = None, servername : str = None):
+        servername = socket.gethostbyname(socket.gethostname()) if servername == None else servername
         port = port if port != None else common.SERVER_PORT
         self.address = (servername, port)
         self.server_soc = socket.socket(socket.AF_INET, socket.SOCK_STREAM)

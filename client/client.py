@@ -6,6 +6,7 @@ from termcolor import colored
 import matplotlib.pyplot as plt
 import matplotlib.animation as animation
 import datetime
+import traceback
 
 sys.path.insert(1, os.path.join(sys.path[0], '..'))
 import common
@@ -97,9 +98,3 @@ if __name__ == "__main__":
     plt.get_current_fig_manager().window.state('zoomed')
     plt.tight_layout()
     plt.show()
-
-
-
-
-
-    

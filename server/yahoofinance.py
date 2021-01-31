@@ -4,7 +4,7 @@ import re
 # In the website source the symbol of a stock always appears after "<a href="/quote/" and before "?p=",
 # which is why these terms are looked up in the html. 
 
-def getGainers():
+def get_gainers():
     response = urllib.request.urlopen("https://finance.yahoo.com/gainers")
     lines = response.read().decode("utf8").splitlines()
     lines = list(filter(lambda line: (('<a href="/quote/' in line) and ('?p=' in line) and ('title=' in line) and 'class="Fw(600) C($linkColor)"' in line), lines))
