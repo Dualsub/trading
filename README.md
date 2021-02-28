@@ -1,5 +1,5 @@
 # Trading Bot
-Python program that uses a simple MACD-indicator to determine when to sell and buy stocks.
+Python program that uses a simple MACD-indicator to determine when to sell and buy stocks. :chart_with_upwards_trend:
 
 ### Backtesting
 Backtesting on old data is used to analyse the efficiency of the algoritm. This data is retrived through the [IEX Cloud](https://iexcloud.io/) REST-api.
