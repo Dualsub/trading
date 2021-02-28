@@ -25,6 +25,6 @@ def get_gainers():
     return stock_symbols
 
 if __name__ == "__main__":
-    for symbol in getGainers():
+    for symbol in get_gainers():
         print(symbol)
             

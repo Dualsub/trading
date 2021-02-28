@@ -1,0 +1,19 @@
+{
+ "originalAmount": 1000,
+ "market": "OMX",
+ "date": "2021-02-12_13:17:02",
+ "initialPositions": {
+    "AAPL" : {
+        "latestPrice" : 100.42,
+        "latestUpdate" : "2021-02-13_13:17:02",
+        "buyPrice" : 98.87,
+        "numShares" : 2
+    },
+    "BNGO" : {
+        "latestPrice" : 40.76,
+        "latestUpdate" : "2021-02-11_13:17:02",
+        "buyPrice" : 69.65,
+        "numShares" : 6
+    }
+ }
+}

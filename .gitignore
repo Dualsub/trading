@@ -2,5 +2,7 @@
 build/
 __pycache__/
 server/__pycache__/
+server/
+secrets.py
 client/__pycache__/
 *.bat

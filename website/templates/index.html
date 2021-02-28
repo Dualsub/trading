@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8"/>
+        <meta name="viewport" content="width=device-width, initial-scale=1"/>
+        <link
+        rel="stylesheet"
+        href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
+        integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh"
+        crossorigin="anonymous"
+      />
+      <link
+        rel="stylesheet"
+        href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css"
+        crossorigin="anonymous"
+      />
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.5.0/Chart.min.js"></script>
+      <script src="https://code.jquery.com/jquery-3.5.1.js"></script>
+      <script type=text/javascript>
+        $SCRIPT_ROOT = {{ request.script_root|tojson|safe }};
+      </script>
+      <title>Trading Bot</title>
+      <div class="container text-center"> 
+        <h1>Trading Bot</h1>
+        <span id="result"> </span>
+        <script>
+        document.getElementById("result").innerHTML;
+        </script>
+        <div>
+            <canvas id="myChart" width=".02em" height=".02em"></canvas>
+        </div>
+
+        <script type=text/javascript>
+        
+        var intervalID = setInterval(update_values, 1000);
+        var c = 0;
+        var temp;
+
+        function update_values() {
+            $.getJSON($SCRIPT_ROOT + "/portfolio-status",
+            function(data) {
+                $("#result").text(data.price)
+                temp = data.price;
+            });
+
+            c=c+1
+            myChart.data.labels.push(c);
+            myChart.data.datasets.forEach((dataset) => {
+                dataset.data.push(temp)
+            });
+            myChart.update()
+        };
+
+        var myChart = new Chart(document.getElementById("myChart"), {
+            type: "line",
+            data: {
+                labels: [c],
+                datasets: [{
+                    label: "#",
+                    data: [temp]
+                }]
+            },
+            options: {
+				responsive: true,
+				title: {
+					display: true,
+					text: 'Something'
+				},
+				tooltips: {
+					mode: 'index',
+					intersect: false,
+				},
+				hover: {
+					mode: 'nearest',
+					intersect: true
+				},
+				scales: {
+					yAxes: [{
+						ticks: {
+                            beginAtZero : true
+                        }
+					}]
+				}
+			}
+        });
+        
+        </script>
+
+      </div>
+    </head>
+</html>

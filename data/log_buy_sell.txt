@@ -1,0 +1,12 @@
+[SOLD AAPL] Profit: 1.55 Bought at 98.87, sold at 100.42.
+[SOLD AAPL] Profit: 1.55 Bought at 98.87, sold at 100.42.
+[SOLD AAPL] Profit: 1.55 Bought at 98.87, sold at 100.42.
+[SOLD BNGO] Loss: -28.89 Bought at 69.65, sold at 40.76.
+[BOUGHT KIP] Bought 2 shares at 950.0486225454958.
+[BOUGHT TLQE] Bought 2 shares at 217.37768415492258.
+[SOLD KIP] Loss: 0.0 Bought at 950.05, sold at 950.05.
+[SOLD TLQE] Loss: 0.0 Bought at 217.38, sold at 217.38.
+[BOUGHT JHY] Bought 2 shares at 34.97376835138752.
+[BOUGHT IDPSD] Bought 2 shares at 100.16849278310545.
+[BOUGHT CHI] Bought 2 shares at 35.860669040938426.
+[BOUGHT JJLT] Bought 2 shares at 161.8713526668239.
