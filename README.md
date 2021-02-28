@@ -4,7 +4,7 @@ Python program that uses a simple MACD-indicator to determine when to sell and b
 ## Backtesting
 Backtesting on old data is used to analyse the efficiency of the algoritm. This data is retrived through the [IEX Cloud](https://iexcloud.io/) REST-api.
 
-***DISCLMAER:***
+***DISCLAMER:***
 * The data used is not true histoical data, but still resembles real stock movements.
 * Comission is not taken into account with the current model.
 
