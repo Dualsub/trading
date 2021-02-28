@@ -6,7 +6,7 @@ Backtesting on old data is used to analyse the efficiency of the algoritm. This 
 
 ***DISCLAMER:***
 * The data used is not true histoical data, but still resembles real stock movements.
-* Comission is not taken into account with the current model.
+* Commission is not taken into account with the current model.
 
 #### Examples of profitable results:
 
